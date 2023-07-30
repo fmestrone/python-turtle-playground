@@ -1,0 +1,5 @@
+chlorophyll==0.4.1
+Pygments==2.15.1
+pyperclip==1.8.2
+tklinenums==1.7.0
+toml==0.10.2
