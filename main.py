@@ -3,14 +3,18 @@ from tkinter import END
 
 import pygments.lexers
 import tkinter as tk
+import tkinter.ttk as tkk
 import tkinter.messagebox as msgbox
 from io import StringIO
 from chlorophyll import CodeView
+
+from turtle import Turtle, TurtleScreen
 
 config = {
     "clear_after_execute": True,
     "pop_up_on_stdout": True,
     "pop_up_on_stderr": True,
+    "single_pane": False,
 }
 
 canvas_locals = {}
@@ -22,6 +26,12 @@ stderr_console = []
 
 
 def setup_turtle_context():
+    if config["single_pane"]:
+        turtle_canvas = tk.Canvas(root, height=600, width=800)
+        turtle_canvas.pack()
+        turtle_screen = TurtleScreen(turtle_canvas)
+        Turtle._screen = turtle_screen
+
     turtle_commands = """
 from turtle import *
 from random import random
@@ -80,15 +90,15 @@ def show_last_command():
 
 root = tk.Tk()
 root.title("Python Turtle Editor")
-editor = tk.Canvas(root, height=600, width=800)
+editor = tkk.PanedWindow(root, height=600, width=800)
 editor.pack()
 
 code_view = CodeView(editor, lexer=pygments.lexers.PythonLexer, color_scheme="monokai", font=("Courier New", 17))
 code_view.pack()
 
-button = tk.Button(editor, text="Last Command", bg='White', fg='Black', command=lambda: show_last_command())
+button = tkk.Button(editor, text="Last Command", command=lambda: show_last_command())
 button.pack()
-button = tk.Button(editor, text="Execute", bg='White', fg='Black', command=lambda: execute())
+button = tkk.Button(editor, text="Execute", command=lambda: execute())
 button.pack()
 
 setup_turtle_context()

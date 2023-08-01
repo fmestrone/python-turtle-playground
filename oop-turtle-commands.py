@@ -1,7 +1,8 @@
 from turtle import *
 from random import random
 
-# Logo, very old, lots of fun
+# Logo, very old programming language, lots of fun with turtle graphics
+# https://en.wikipedia.org/wiki/Logo_(programming_language)
 
 pencolor("blue")
 forward(100)
@@ -191,6 +192,7 @@ clearscreen()
 
 turtleRed = Turtle()
 turtleRed.pencolor("red")
+
 turtleBlue = Turtle()
 turtleBlue.pencolor("blue")
 
