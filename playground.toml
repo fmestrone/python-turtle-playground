@@ -1,0 +1,4 @@
+clear_after_execute = true
+pop_up_on_stdout = true
+pop_up_on_stderr = true
+single_pane = false
