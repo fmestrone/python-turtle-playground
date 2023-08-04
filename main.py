@@ -1,5 +1,5 @@
 import sys
-from tkinter import END
+from tkinter import END, N, S, E, W
 
 import pygments.lexers
 import tkinter as tk
@@ -14,7 +14,7 @@ config = {
     "clear_after_execute": True,
     "pop_up_on_stdout": True,
     "pop_up_on_stderr": True,
-    "single_pane": False,
+    "single_pane": True,
 }
 
 canvas_locals = {}
@@ -27,10 +27,11 @@ stderr_console = []
 
 def setup_turtle_context():
     if config["single_pane"]:
-        turtle_canvas = tk.Canvas(root, height=600, width=800)
-        turtle_canvas.pack()
+        turtle_canvas = tk.Canvas(root)
+        turtle_canvas.grid(row=0, rowspan=3, column=1, sticky="NSEW")
         turtle_screen = TurtleScreen(turtle_canvas)
         Turtle._screen = turtle_screen
+        root.columnconfigure(1, weight=2)
 
     turtle_commands = """
 from turtle import *
@@ -90,16 +91,21 @@ def show_last_command():
 
 root = tk.Tk()
 root.title("Python Turtle Editor")
-editor = tkk.PanedWindow(root, height=600, width=800)
-editor.pack()
+editor_area = tkk.Frame(root)
+editor_area.grid(row=0, column=0)
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
+root.rowconfigure(1, weight=0)
+root.rowconfigure(2, weight=0)
+if config["single_pane"]:
+    root.columnconfigure(1, weight=2)
 
-code_view = CodeView(editor, lexer=pygments.lexers.PythonLexer, color_scheme="monokai", font=("Courier New", 17))
-code_view.pack()
-
-button = tkk.Button(editor, text="Last Command", command=lambda: show_last_command())
-button.pack()
-button = tkk.Button(editor, text="Execute", command=lambda: execute())
-button.pack()
+code_view = CodeView(editor_area, lexer=pygments.lexers.PythonLexer, color_scheme="monokai", font=("Courier New", 17))
+code_view.grid(row=0, column=0, sticky="NSEW")
+button = tkk.Button(editor_area, text="Last Command", command=lambda: show_last_command())
+button.grid(row=1, column=0)
+button = tkk.Button(editor_area, text="Execute", command=lambda: execute())
+button.grid(row=2, column=0)
 
 setup_turtle_context()
 
